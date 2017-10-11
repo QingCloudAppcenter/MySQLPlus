@@ -1,0 +1,251 @@
+{
+    "name": {{cluster.name}},
+    "description": {{cluster.description}},
+    "vxnet": {{cluster.vxnet}},
+    "backup_policy": "device",
+    "incremental_backup_supported": true,
+    "upgrade_policy": [
+            "appv-2cjtaggw"
+    ],
+    "nodes": [{
+        "container": {
+            "type": "lxc",
+            "image": "img-gcebxdow",
+            "zone": "sh1a"
+        },
+        "instance_class": {{cluster.nodes.instance_class}},
+        "count": {{cluster.nodes.count}},
+        "cpu": {{cluster.nodes.cpu}},
+        "memory": {{cluster.nodes.memory}},
+        "volume": {
+            "size": {{cluster.nodes.volume_size}},
+            "mount_point": "/data",
+            "filesystem": "xfs"
+        },
+        "passphraseless": "ssh-rsa",
+        "vertical_scaling_policy": "sequential",
+        "server_id_upper_bound": 7,
+        "services": {
+            "start": {
+                "cmd": "/etc/init.d/xenon-service start",
+                "timeout": 1200
+            },
+            "stop": {
+                "cmd": "/etc/init.d/xenon-service stop",
+                "timeout": 1200
+            },
+            "scale_in": {
+                "cmd": "/etc/init.d/xenon-service scalein",
+                "timeout": 1200
+            },
+            "scale_out": {
+                "cmd": "/etc/init.d/xenon-service scaleout",
+                "timeout": 21600
+            },
+            "restart": {
+                "cmd": "/etc/init.d/xenon-service restart",
+                "timeout": 1200
+            },
+            "destroy": {
+                "cmd": "/etc/init.d/xenon-service destroy",
+                "timeout": 300
+            },
+            "backup": {
+                "cmd": "/etc/init.d/xenon-service backup",
+                "nodes_to_execute_on": 1,
+                "timeout": 86400
+            },
+            "restore": {
+                "cmd": "/etc/init.d/xenon-service restore",
+                "timeout": 86400
+            },
+            "copy_logs": {
+                "type": "custom",
+                "cmd": "/etc/init.d/xenon-service copylogs",
+                "timeout": 120,
+                "service_params": {
+                    "copy_log_files": {{service_params.copy_log_files}}
+                }
+            },
+            "clean_logs": {
+                "type": "custom",
+                "cmd": "/etc/init.d/xenon-service cleanlogs",
+                "timeout": 120
+            },
+            "add_user": {
+                "type": "custom",
+                "cmd": "/etc/init.d/xenon-service adduser",
+                "timeout": 120,
+                "service_params": {
+                    "user": {{service_params.user}},
+                    "passwd": {{service_params.passwd}},
+                    "privs": {{service_params.privs}},
+                    "database": {{service_params.database}},
+                    "host": {{service_params.host}}
+                }
+            },
+            "del_user": {
+                "type": "custom",
+                "cmd": "/etc/init.d/xenon-service deluser",
+                "timeout": 120,
+                "service_params": {
+                    "user": {{service_params.user}}
+                }
+            },
+            "restart_node": {
+                "type": "custom",
+                "cmd": "/etc/init.d/xenon-service restartnode",
+                "timeout": 1200,
+                "service_params": {
+                    "node_id": {{service_params.node_id}}
+                }
+            },
+            "rebuildme": {
+                "type": "custom",
+                "cmd": "/etc/init.d/xenon-service rebuildme",
+                "timeout": 21600,
+                "service_params": {
+                    "node_id": {{service_params.node_id}}
+                }
+            }
+        }
+    }],
+    "endpoints": {
+        "client_port": {
+            "port": {{env.port}},
+            "protocol": "tcp"
+        },
+        "reserved_ips": {
+            "write_vip": {
+                "value": ""
+            },
+            "read_vip": {
+                "value": ""
+            }
+        }
+    },
+    "env": {
+        "port": {{env.port}},
+        "character_set_server": {{env.character_set_server}},
+        "interactive_timeout": {{env.interactive_timeout}},
+        "user": {{env.user}},
+        "passwd": {{env.passwd}},
+        "back_log": {{env.back_log}},
+        "expire_logs_days": {{env.expire_logs_days}},
+        "ft_min_word_len": {{env.ft_min_word_len}},
+        "key_buffer_size": {{env.key_buffer_size}},
+        "log_bin_trust_function_creators": {{env.log_bin_trust_function_creators}},
+        "long_query_time": {{env.long_query_time}},
+        "lower_case_table_names": {{env.lower_case_table_names}},
+        "max_connect_errors": {{env.max_connect_errors}},
+        "max_execution_time": {{env.max_execution_time}},
+        "query_cache_size": {{env.query_cache_size}},
+        "query_cache_type": {{env.query_cache_type}},
+        "sync_master_info": {{env.sync_master_info}},
+        "sync_relay_log": {{env.sync_relay_log}},
+        "sync_relay_log_info": {{env.sync_relay_log_info}},
+        "table_open_cache": {{env.table_open_cache}},
+        "thread_cache_size": {{env.thread_cache_size}},
+        "wait_timeout": {{env.wait_timeout}},
+        "innodb_ft_max_token_size": {{env.innodb_ft_max_token_size}},
+        "innodb_ft_min_token_size": {{env.innodb_ft_min_token_size}},
+        "sql_mode": {{env.sql_mode}},
+        "max_allowed_packet": {{env.max_allowed_packet}},
+        "tokudb_fsync_log_period": {{env.tokudb_fsync_log_period}},
+        "slave_parallel_workers": {{env.slave_parallel_workers}}
+    },
+    "advanced_actions": ["change_vxnet", "scale_horizontal"],
+    "health_check": {
+        "enable": true,
+        "interval_sec": 60,
+        "timeout_sec": 30,
+        "action_timeout_sec": 30,
+        "healthy_threshold": 2,
+        "unhealthy_threshold": 2,
+        "check_cmd": "/etc/init.d/xenon-service checkservice",
+        "action_cmd": "/etc/init.d/xenon-service tackleservice"
+    },
+    "monitor": {
+        "enable": true,
+        "cmd": "/etc/init.d/xenon-service monitor",
+        "items": {
+            "Com_commit": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Slow_queries": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Select_scan": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Questions": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Connections": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Innodb_buffer_pool_free_size": {
+                "unit": "MB",
+                "value_type": "int",
+                "statistics_type": "avg"
+            },
+            "Innodb_buffer_pool_reads": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Innodb_buffer_pool_read_requests": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Innodb_row_lock_waits": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Seconds_Behind_Master": {
+                "unit": "seconds",
+                "value_type": "int",
+                "statistics_type": "avg"
+            },
+            "Writes": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "delta"
+            },
+            "Threads_connected": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "avg"
+            },
+            "Threads_running": {
+                "unit": "number",
+                "value_type": "int",
+                "statistics_type": "avg"
+            },
+            "Threads_Cache_Hit": {
+                "unit": "%",
+                "value_type": "int",
+                "statistics_type": "avg"
+            }
+        },
+        "display": ["Com_commit", "Slow_queries", "Select_scan",
+            "Questions", "Connections", "Seconds_Behind_Master", "Writes",
+            "Innodb_buffer_pool_free_size", "Innodb_row_lock_waits",
+            "Innodb_buffer_pool_read_requests", "Innodb_buffer_pool_reads",
+            "Threads_connected", "Threads_running", "Threads_Cache_Hit"
+        ],
+        "alarm": ["Slow_queries", "Seconds_Behind_Master", "Questions", "Threads_connected"]
+    }
+}

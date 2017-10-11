@@ -1,0 +1,402 @@
+{
+    "type": "array",
+    "properties": [{
+        "key": "cluster",
+        "description": "Cluster properties",
+        "type": "array",
+        "properties": [{
+            "key": "name",
+            "label": "Name",
+            "description": "",
+            "type": "string",
+            "default": "QingCloud MySQL Plus",
+            "required": "no"
+        }, {
+            "key": "description",
+            "label": "Description",
+            "description": "",
+            "type": "string",
+            "default": "",
+            "required": "no"
+        }, {
+            "key": "vxnet",
+            "label": "Vxnet",
+            "description": "The vxnet that the Application will join",
+            "type": "string",
+            "default": "",
+            "required": "yes"
+        }, {
+            "key": "nodes",
+            "label": "Nodes",
+            "description": "Node properties",
+            "type": "array",
+            "properties": [{
+                "key": "cpu",
+                "label": "CPU",
+                "description": "CPUs of each node",
+                "type": "integer",
+                "default": 1,
+                "range": [
+                    1,
+                    2,
+                    4,
+                    8,
+                    16
+                ],
+                "required": "yes"
+            }, {
+                "key": "memory",
+                "label": "Memory",
+                "description": "Memory of each node",
+                "type": "integer",
+                "default": 2048,
+                "range": [
+                    2048,
+                    4096,
+                    8192,
+                    16384,
+                    32768,
+                    65536
+                ],
+                "required": "yes"
+            }, {
+                "key": "count",
+                "label": "Count",
+                "description": "Number of nodes for the cluster to create",
+                "type": "integer",
+                "default": 3,
+                "range": [
+                    3,
+                    5,
+                    7
+                ],
+                "required": "yes"
+            }, {
+                "key": "instance_class",
+                "label": "Resource type",
+                "description": "",
+                "type": "integer",
+                "default": 1,
+                "range": [
+                    0,
+                    1
+                ],
+                "required": "yes"
+            }, {
+                "key": "volume_size",
+                "label": "Volume size",
+                "description": "The volume size for each instance",
+                "type": "integer",
+                "min": 10,
+                "max": 1000,
+                "step": 10,
+                "default": 10,
+                "required": "yes"
+            }]
+        }]
+    }, {
+        "key": "service_params",
+        "description": "Custom service configuration properties",
+        "type": "array",
+        "properties": [{
+            "key": "node_id",
+            "label": "Node_id",
+            "description": "",
+            "type": "string",
+            "required": "yes"
+        }, {
+            "key": "user",
+            "label": "User",
+            "description": "",
+            "type": "string",
+            "default": "",
+            "required": "yes"
+        }, {
+            "key": "passwd",
+            "label": "Password",
+            "description": "",
+            "type": "string",
+            "default": "",
+            "required": "yes"
+        }, {
+            "key": "privs",
+            "label": "Privs",
+            "description": "Except Grant and Super privs",
+            "type": "string",
+            "default": "normal",
+            "required": "yes"
+        }, {
+            "key": "database",
+            "label": "Database",
+            "description": "",
+            "type": "string",
+            "default": "*",
+            "required": "yes"
+        }, {
+            "key": "host",
+            "label": "Host",
+            "description": "",
+            "type": "string",
+            "default": "%",
+            "required": "yes"
+        }, {
+            "key": "copy_log_files",
+            "label": "Copy_log_files",
+            "description": "Download by wget ftp://ip/mysql-slow[mysql-error]",
+            "default": "mysql-slow.log,mysql-error.log",
+            "type": "string",
+            "required": "yes"
+        }]
+    }, {
+        "key": "env",
+        "description": "Application configuration properties",
+        "type": "array",
+        "properties": [{
+            "key": "user",
+            "label": "User",
+            "description": "MySQL user, has normal privileges",
+            "changeable": false,
+            "type": "string",
+            "required": "yes"
+        }, {
+            "key": "passwd",
+            "label": "Password",
+            "description": "MySQL password",
+            "changeable": false,
+            "type": "password",
+            "required": "yes"
+        }, {
+            "key": "port",
+            "label": "Port",
+            "description": "The mysql will restart if modified",
+            "type": "integer",
+            "min": 3306,
+            "max": 65535,
+            "default": 3306,
+            "required": "no"
+        }, {
+            "key": "character_set_server",
+            "label": "Character_set_server",
+            "description": "",
+            "type": "string",
+            "default": "utf8",
+            "required": "no"
+        }, {
+            "key": "interactive_timeout",
+            "label": "Interactive_timeout",
+            "description": "",
+            "type": "integer",
+            "min": 1,
+            "max": 2147483,
+            "default": 3600,
+            "required": "no"
+        }, {
+            "key": "back_log",
+            "label": "Back_log",
+            "description": "The mysql will restart if modified",
+            "type": "integer",
+            "min": 50,
+            "max": 4096,
+            "default": 2048,
+            "required": "no"
+        }, {
+            "key": "expire_logs_days",
+            "label": "Expire_logs_days",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "max": 14,
+            "default": 1,
+            "required": "no"
+        }, {
+            "key": "ft_min_word_len",
+            "label": "Ft_min_word_len",
+            "description": "The mysql will restart if modified",
+            "type": "integer",
+            "min": 1,
+            "max": 4,
+            "default": 4,
+            "required": "no"
+        }, {
+            "key": "key_buffer_size",
+            "label": "Key_buffer_size",
+            "description": "",
+            "type": "integer",
+            "default": 33554432,
+            "required": "no"
+        }, {
+            "key": "log_bin_trust_function_creators",
+            "label": "Log_bin_trust_function_creators",
+            "description": "",
+            "type": "integer",
+            "default": 1,
+            "min": 0,
+            "max": 1,
+            "required": "no"
+        }, {
+            "key": "long_query_time",
+            "label": "Long_query_time",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "max": 300,
+            "default": 3,
+            "required": "no"
+        }, {
+            "key": "lower_case_table_names",
+            "label": "Lower_case_table_names",
+            "description": "The mysql will restart if modified",
+            "type": "integer",
+            "min": 0,
+            "max": 1,
+            "default": 0,
+            "required": "no"
+        }, {
+            "key": "max_connect_errors",
+            "label": "Max_connect_errors",
+            "description": "",
+            "type": "integer",
+            "min": 1,
+            "max": 4294967295,
+            "default": 655360,
+            "required": "no"
+        }, {
+            "key": "max_execution_time",
+            "label": "Max_execution_time",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "max": 3600,
+            "default": 0,
+            "required": "no"
+        }, {
+            "key": "query_cache_size",
+            "label": "Query_cache_size",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "default": 0,
+            "required": "no"
+        }, {
+            "key": "query_cache_type",
+            "label": "Query_cache_type",
+            "description": "The mysql will restart if modified",
+            "type": "string",
+            "default": "OFF",
+            "range": ["ON", "OFF"],
+            "required": "no"
+        }, {
+            "key": "sync_master_info",
+            "label": "Sync_master_info",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "default": 1000,
+            "required": "no"
+        }, {
+            "key": "sync_relay_log",
+            "label": "Sync_relay_log",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "default": 1000,
+            "required": "no"
+        }, {
+            "key": "sync_relay_log_info",
+            "label": "Sync_relay_log_info",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "default": 1000,
+            "required": "no"
+        }, {
+            "key": "table_open_cache",
+            "label": "Table_open_cache",
+            "description": "",
+            "type": "integer",
+            "min": 512,
+            "max": 10240,
+            "default": 2000,
+            "required": "no"
+        }, {
+            "key": "thread_cache_size",
+            "label": "Thread_cache_size",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "max": 16384,
+            "default": 128,
+            "required": "no"
+        }, {
+            "key": "wait_timeout",
+            "label": "Wait_timeout",
+            "description": "",
+            "type": "integer",
+            "min": 1,
+            "max": 2147483,
+            "default": 3600,
+            "required": "no"
+        }, {
+            "key": "innodb_ft_max_token_size",
+            "label": "Innodb_ft_max_token_size",
+            "description": "The mysql will restart if modified",
+            "type": "integer",
+            "min": 10,
+            "max": 84,
+            "default": 84,
+            "required": "no"
+        }, {
+            "key": "innodb_ft_min_token_size",
+            "label": "Innodb_ft_min_token_size",
+            "description": "The mysql will restart if modified",
+            "type": "integer",
+            "min": 0,
+            "max": 16,
+            "default": 3,
+            "required": "no"
+        }, {
+            "key": "sql_mode",
+            "label": "Sql_mode",
+            "description": "The mysql will restart if modified",
+            "type": "string",
+            "default": "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION",
+            "range": ["ONLY_FULL_GROUP_BY",
+                "STRICT_TRANS_TABLES",
+                "NO_ENGINE_SUBSTITUTION",
+                "NO_ZERO_IN_DATE",
+                "NO_ZERO_DATE",
+                "ERROR_FOR_DIVISION_BY_ZERO",
+                "NO_AUTO_CREATE_USER"
+            ],
+            "multichoice": true,
+            "required": "no"
+        }, {
+            "key": "max_allowed_packet",
+            "label": "Max_allowed_packet",
+            "description": "",
+            "type": "integer",
+            "min": 1024,
+            "max": 1073741824,
+            "default": 4194304,
+            "required": "no"
+        }, {
+            "key": "tokudb_fsync_log_period",
+            "label": "Tokudb_fsync_log_period",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "max": 3600,
+            "default": 0,
+            "required": "no"
+        }, {
+            "key": "slave_parallel_workers",
+            "label": "Slave_parallel_workers",
+            "description": "",
+            "type": "integer",
+            "min": 0,
+            "max": 1024,
+            "default": 64,
+            "required": "no"
+        }]
+    }]
+}
